@@ -43,6 +43,8 @@ def main():
     bom_rct = bom_img.get_rect()    #抽出
     bom_rct.center =x,y     #爆弾Rectの中心座標を乱数で指定する
     vx, vy = +5, -5
+    bom_imgs = []
+    accs = [a for a in range(1, 11)]
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -73,10 +75,17 @@ def main():
             vx *= -1
         if not tate:
             vy *= -1
+
         screen.blit(bom_img, bom_rct)
         pg.display.update()
         tmr += 1
-        clock.tick(50)
+        clock.tick(300)
+        for r in range(1, 11): #追加機能２　時間とともに爆弾が加速する
+            bom_img = pg.Surface((20*r, 20*r))
+            pg.draw.circle(bom_img, (255, 0, 0), (10*r, 10*r), 10*r)
+            bom_imgs.append(bom_img)
+            bom_img.set_colorkey((0, 0, 0))
+        bom_img = bom_imgs[min(tmr//500, 9)]
 
 
 if __name__ == "__main__":
