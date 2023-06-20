@@ -55,6 +55,10 @@ def main():
             if event.type == pg.QUIT:
                 return
 
+        if kk_rct.colliderect(bom_rct):
+            print("ゲームオーバー")
+            game_over = True
+
         key_lst = pg.key.get_pressed()  # keyを押すやつ
         sum_mv = [0, 0]  # 合計移動量
         for k, mv in delta.items():
@@ -64,10 +68,6 @@ def main():
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-
-        if kk_rct.colliderect(bom_rct):
-            print("ゲームオーバー")
-            game_over = True
 
         screen.blit(bg_img, [0, 0])
         if game_over:
@@ -127,15 +127,13 @@ def check_bound(rect:pg.Rect) -> tuple[bool,bool]:
     if rect.top < 0 or HEIGHT < rect.bottom:  #縦の判定
          tate = False
     return yoko, tate
-
-
+    
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load("ex02/fig/pg_bg.jpg")
     kk_img = pg.image.load("ex02/fig/3.png")
-    
     kk_img = pg.transform.rotozoom(kk_img, 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
@@ -178,7 +176,6 @@ def main():
             kk_rct.move_ip(sum_mv)
             if check_bound(kk_rct) != (True,True):
                 kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
-
 
         screen.blit(bg_img, [0, 0])
         screen.blit(kk_img, kk_rct)
